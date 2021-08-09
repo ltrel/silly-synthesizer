@@ -1,5 +1,5 @@
 #include <vector>
-#include <math.h>
+#include <cmath>
 #include "wavefile.h"
 #include "utils.h"
 

@@ -1,6 +1,5 @@
 #include "wavefile.h"
 
-#include <math.h>
 #include <algorithm>
 #include <filesystem>
 #include <fstream>

@@ -1,9 +1,8 @@
-#include "utils.h"
-
-#include <math.h>
+#include <cmath>
 #include <string>
 #include <map>
 #include <locale>
+#include "utils.h"
 
 double mapRange(double input, double inMin, double inMax, double outMin, double outMax)
 {
@@ -60,5 +59,5 @@ int noteToSemitones(std::string const &note)
 double noteToFreq(std::string const &note)
 {
   int semitones = noteToSemitones(note);
-  return 440.0 * pow(2.0, semitones / 12.0);
+  return 440.0 * std::pow(2.0, semitones / 12.0);
 }
