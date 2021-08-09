@@ -14,16 +14,14 @@ int main(int argc, char *argv[])
   long numSamples{seconds * sampleRate};
   std::vector<std::vector<long>> audioData(numChannels, std::vector<long>(numSamples));
 
-  // 220Hz in left channel
-  double scale{hzToSinScale(220, sampleRate)};
+  double scale{hzToSinScale(noteToFreq("A3"), sampleRate)};
   for (int i{0}; i < numSamples; i++)
   {
     double sample{sin(i * scale) * volume};
     audioData[0][i] = floor(mapRange(sample, -1.0, 1.0, -8388608, 8388607));
   }
 
-  // 275Hz in right channel
-  scale = hzToSinScale(275, sampleRate);
+  scale = hzToSinScale(noteToFreq("F4"), sampleRate);
   for (int i{0}; i < numSamples; i++)
   {
     double sample{sin(i * scale) * volume};
