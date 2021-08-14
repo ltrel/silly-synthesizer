@@ -6,10 +6,11 @@
 #include <locale>
 #include <cmath>
 
-Synthesizer::Synthesizer(int sampleRate, int numChannels)
+Synthesizer::Synthesizer(int sampleRate, int numChannels, SynthOptions options)
 {
   this->sampleRate = sampleRate;
   this->numChannels = numChannels;
+  synthOptions = options;
 }
 
 void Synthesizer::renderNote(std::vector<std::vector<double>> &dest,
@@ -22,19 +23,18 @@ void Synthesizer::renderNote(std::vector<std::vector<double>> &dest,
 
   long numSamples{std::lround(sampleRate * seconds)};
 
+  double realVolume{synthOptions.baseVolume * volume};
   double hz{noteToFreq(note)};
   double scale{hzToSinXScale(hz)};
-  double attackSeconds{0.01};
-  double releaseSeconds{0.01};
 
   for (long i{0}; i < numSamples; i++)
   {
     // Apply attack and release modifier to note
     long reverseIndex{numSamples - 1 - i};
-    double attack{std::min(i / (sampleRate * attackSeconds), 1.0)};
-    double release{std::min(reverseIndex / (sampleRate * releaseSeconds), 1.0)};
+    double attack{std::min(i / (sampleRate * synthOptions.attackSeconds), 1.0)};
+    double release{std::min(reverseIndex / (sampleRate * synthOptions.releaseSeconds), 1.0)};
 
-    double sample{sin(i * scale) * volume * attack * release};
+    double sample{sin(i * scale) * realVolume * attack * release};
     // Add same sample to all channels for now
     for (auto &channel : dest)
     {
@@ -88,5 +88,5 @@ double Synthesizer::noteToFreq(std::string const &note)
   semitones -= 57;
 
   // Calculate and return the frequency in Hz
-  return 440.0 * std::pow(2.0, semitones / 12.0);
+  return synthOptions.tuningPitch * std::pow(2.0, semitones / 12.0);
 }
