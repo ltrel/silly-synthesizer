@@ -31,13 +31,17 @@ private:
   } header;
 #pragma pack(pop)
 
+  long minAmplitude;
+  long maxAmplitude;
   std::vector<char> rawAudioData;
+
+  long formatSample(double input);
 
 public:
   WaveFile(int sampleRate, int numChannels, int bitsPerSample);
   int getSampleRate() { return header.sampleRate; }
   int getNumChannels() { return header.numChannels; }
   int getBitsPerSample() { return header.bitsPerSample; }
-  void pushSamples(std::vector<std::vector<long>> &newAudioData);
+  void pushSamples(std::vector<std::vector<double>> &newAudioData);
   void saveToFile(std::filesystem::path path);
 };

@@ -1,6 +1,7 @@
 #include <vector>
 #include <cmath>
 #include "wavefile.h"
+#include "synthesizer.h"
 #include "utils.h"
 
 int main(int argc, char *argv[])
@@ -9,24 +10,28 @@ int main(int argc, char *argv[])
   int numChannels{2};
   int bitsPerSample{24};
 
-  int seconds{5};
+  double crotchet{0.8};
   double volume{1 / 6.0};
-  long numSamples{seconds * sampleRate};
-  std::vector<std::vector<long>> audioData(numChannels, std::vector<long>(numSamples));
 
-  double scale{hzToSinScale(noteToFreq("A3"), sampleRate)};
-  for (int i{0}; i < numSamples; i++)
-  {
-    double sample{sin(i * scale) * volume};
-    audioData[0][i] = floor(mapRange(sample, -1.0, 1.0, -8388608, 8388607));
-  }
+  std::vector<std::vector<double>> audioData(numChannels, std::vector<double>{});
 
-  scale = hzToSinScale(noteToFreq("F4"), sampleRate);
-  for (int i{0}; i < numSamples; i++)
-  {
-    double sample{sin(i * scale) * volume};
-    audioData[1][i] = floor(mapRange(sample, -1.0, 1.0, -8388608, 8388607));
-  }
+  Synthesizer synth{sampleRate, numChannels};
+  // Notes to the first phrase of Ode to Joy
+  synth.renderNote(audioData, "e4", crotchet, volume);
+  synth.renderNote(audioData, "e4", crotchet, volume);
+  synth.renderNote(audioData, "f4", crotchet, volume);
+  synth.renderNote(audioData, "g4", crotchet, volume);
+  synth.renderNote(audioData, "g4", crotchet, volume);
+  synth.renderNote(audioData, "f4", crotchet, volume);
+  synth.renderNote(audioData, "e4", crotchet, volume);
+  synth.renderNote(audioData, "d4", crotchet, volume);
+  synth.renderNote(audioData, "c4", crotchet, volume);
+  synth.renderNote(audioData, "c4", crotchet, volume);
+  synth.renderNote(audioData, "d4", crotchet, volume);
+  synth.renderNote(audioData, "e4", crotchet, volume);
+  synth.renderNote(audioData, "e4", crotchet*1.5, volume);
+  synth.renderNote(audioData, "d4", crotchet*0.5, volume);
+  synth.renderNote(audioData, "d4", crotchet*2, volume);
 
   WaveFile waveFile{sampleRate, numChannels, bitsPerSample};
   waveFile.pushSamples(audioData);

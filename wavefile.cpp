@@ -1,9 +1,11 @@
 #include "wavefile.h"
+#include "utils.h"
 
 #include <algorithm>
 #include <filesystem>
 #include <fstream>
 #include <vector>
+#include <cmath>
 
 WaveFile::WaveFile(int sampleRate, int numChannels, int bitsPerSample)
 {
@@ -21,9 +23,21 @@ WaveFile::WaveFile(int sampleRate, int numChannels, int bitsPerSample)
   int bytesPerSample{bitsPerSample / 8};
   header.byteRate = header.sampleRate * header.numChannels * bytesPerSample;
   header.blockAlign = header.numChannels * bytesPerSample;
+
+  // Determine value range that floating point samples will be mapped onto
+  if (bitsPerSample == 8)
+  {
+    minAmplitude = 0;
+    maxAmplitude = 255;
+  }
+  else
+  {
+    minAmplitude = -std::pow(2, (header.bitsPerSample - 1));
+    maxAmplitude = std::pow(2, (header.bitsPerSample - 1)) - 1;
+  }
 }
 
-void WaveFile::pushSamples(std::vector<std::vector<long>> &newAudioData)
+void WaveFile::pushSamples(std::vector<std::vector<double>> &newAudioData)
 {
   // Ensure the new audio data has the right number of channels and  and equal
   // number of samples in each channel
@@ -36,7 +50,7 @@ void WaveFile::pushSamples(std::vector<std::vector<long>> &newAudioData)
   bool sizesEqual{std::all_of(
       newAudioData.begin(),
       newAudioData.end(),
-      [firstSize](const std::vector<long> &x)
+      [firstSize](const std::vector<double> &x)
       { return x.size() == firstSize; })};
   if (!sizesEqual)
   {
@@ -44,21 +58,22 @@ void WaveFile::pushSamples(std::vector<std::vector<long>> &newAudioData)
   }
 
   // Reserve enough space for the new samples
+  int bytesPerSample{header.bitsPerSample / 8};
   std::size_t newSize{rawAudioData.size() + newAudioData[0].size() *
-                                                sizeof(long) *
+                                                bytesPerSample *
                                                 header.numChannels};
   rawAudioData.reserve(newSize);
 
-  int bytesPerSample{header.bitsPerSample / 8};
   // Loop over number of samples
   for (std::size_t i{0}; i < newAudioData[0].size(); i++)
   {
     // Loop over number of channels
     for (std::size_t j{0}; j < newAudioData.size(); j++)
     {
+      long formattedSample{formatSample(newAudioData[j][i])};
       // Append the first N bytes of the long containing the sample, where N
       // is the number of bytes a sample wil occupy in the file
-      char *sampleAsChar = reinterpret_cast<char *>(&newAudioData[j][i]);
+      char *sampleAsChar = reinterpret_cast<char *>(&formattedSample);
       rawAudioData.insert(
           rawAudioData.end(), sampleAsChar, sampleAsChar + bytesPerSample);
     }
@@ -77,4 +92,9 @@ void WaveFile::saveToFile(std::filesystem::path path)
   outStream.write(reinterpret_cast<char *>(&rawAudioData[0]),
                   rawAudioData.size());
   outStream.close();
+}
+
+long WaveFile::formatSample(double input)
+{
+  return std::lround(mapRange(input, -1.0, 1.0, minAmplitude, maxAmplitude));
 }
