@@ -9,7 +9,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth);
 int main(int argc, char *argv[])
 {
   int sampleRate{44100};
-  int numChannels{2};
+  int numChannels{1};
   int bitsPerSample{24};
 
   SynthOptions options;
