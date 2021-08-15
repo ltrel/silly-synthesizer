@@ -43,7 +43,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
 
   // Notes to Bach's Prelude in C Minor, BWV 847
   // Bar 1
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "c5", semiquaver);
     synth.renderNote(v1, "eb4", semiquaver);
@@ -64,7 +64,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "g3", semiquaver);
   }
   // Bar 2
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "ab4", semiquaver);
     synth.renderNote(v1, "f4", semiquaver);
@@ -85,7 +85,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "ab3", semiquaver);
   }
   // Bar 3
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "b4", semiquaver);
     synth.renderNote(v1, "f4", semiquaver);
@@ -106,7 +106,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "ab3", semiquaver);
   }
   // Bar 4
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "c5", semiquaver);
     synth.renderNote(v1, "g4", semiquaver);
@@ -127,7 +127,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "eb3", semiquaver);
   }
   // Bar 5
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "eb5", semiquaver);
     synth.renderNote(v1, "ab4", semiquaver);
@@ -148,7 +148,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "c4", semiquaver);
   }
   // Bar 6
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "d5", semiquaver);
     synth.renderNote(v1, "f#4", semiquaver);
@@ -169,7 +169,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "a3", semiquaver);
   }
   // Bar 7
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "d5", semiquaver);
     synth.renderNote(v1, "g4", semiquaver);
@@ -190,7 +190,7 @@ std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
     synth.renderNote(v2, "bb3", semiquaver);
   }
   // Bar 8
-  for (int i{0}; i < 2; i++)
+  for (int i{0}; i < 2; ++i)
   {
     synth.renderNote(v1, "c5", semiquaver);
     synth.renderNote(v1, "e4", semiquaver);

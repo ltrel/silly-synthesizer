@@ -28,7 +28,7 @@ void Synthesizer::renderNote(std::vector<std::vector<double>> &dest,
   double hz{noteToFreq(note)};
   double scale{hzToSinXScale(hz)};
 
-  for (long i{0}; i < numSamples; i++)
+  for (long i{0}; i < numSamples; ++i)
   {
     // Apply attack and release modifier to note
     long reverseIndex{numSamples - 1 - i};
@@ -59,7 +59,7 @@ std::vector<std::vector<double>> Synthesizer::combineVoices(std::vector<std::vec
 
   for (auto &voice : voices)
   {
-    for (int i{0}; i < numChannels; i++)
+    for (int i{0}; i < numChannels; ++i)
     {
       // Sum the samples on this channel of the current voice with the samples
       // in the corresponding channel of the output
@@ -100,7 +100,7 @@ double Synthesizer::noteToFreq(std::string const &note)
 
   // Sum the accidentals in the middle of the string
   int accidentalSum{0};
-  for (std::size_t i{1}; i < note.size() - 1; i++)
+  for (std::size_t i{1}; i < note.size() - 1; ++i)
   {
     char c = std::tolower(note[i], std::locale());
     if (c == '#')

@@ -65,10 +65,10 @@ void WaveFile::pushSamples(std::vector<std::vector<double>> &newAudioData)
   rawAudioData.reserve(newSize);
 
   // Loop over number of samples
-  for (std::size_t i{0}; i < newAudioData[0].size(); i++)
+  for (std::size_t i{0}; i < newAudioData[0].size(); ++i)
   {
     // Loop over number of channels
-    for (std::size_t j{0}; j < newAudioData.size(); j++)
+    for (std::size_t j{0}; j < newAudioData.size(); ++j)
     {
       long formattedSample{formatSample(newAudioData[j][i])};
       // Append the first N bytes of the long containing the sample, where N
