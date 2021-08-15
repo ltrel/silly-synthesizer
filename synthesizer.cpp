@@ -5,6 +5,7 @@
 #include <map>
 #include <locale>
 #include <cmath>
+#include <algorithm>
 
 Synthesizer::Synthesizer(int sampleRate, int numChannels, SynthOptions options)
 {
@@ -41,6 +42,34 @@ void Synthesizer::renderNote(std::vector<std::vector<double>> &dest,
       channel.push_back(sample);
     }
   }
+}
+
+std::vector<std::vector<double>> Synthesizer::combineVoices(std::vector<std::vector<std::vector<double>>> &voices)
+{
+  // Check how many samples long each voice is and find the maximum
+  std::vector<std::size_t> voiceLengths{};
+  for (auto &voice : voices)
+  {
+    voiceLengths.push_back(voice[0].size());
+  }
+  std::size_t numSamples{*std::max_element(voiceLengths.begin(), voiceLengths.end())};
+
+  // Create variable to hold output with same length as longest voice
+  std::vector<std::vector<double>> result(numChannels, std::vector<double>(numSamples, 0.0));
+
+  for (auto &voice : voices)
+  {
+    for (int i{0}; i < numChannels; i++)
+    {
+      // Sum the samples on this channel of the current voice with the samples
+      // in the corresponding channel of the output
+      std::vector<double> &inChannel = voice[i];
+      std::vector<double> &outChannel = result[i];
+      std::transform(inChannel.begin(), inChannel.end(), outChannel.begin(),
+                     outChannel.begin(), std::plus<double>());
+    }
+  }
+  return result;
 }
 
 double Synthesizer::hzToSinXScale(double frequency)
