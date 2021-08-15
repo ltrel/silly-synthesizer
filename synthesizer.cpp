@@ -8,10 +8,8 @@
 #include <algorithm>
 
 Synthesizer::Synthesizer(int sampleRate, int numChannels, SynthOptions options)
+    : sampleRate{sampleRate}, numChannels{numChannels}, synthOptions{options}
 {
-  this->sampleRate = sampleRate;
-  this->numChannels = numChannels;
-  synthOptions = options;
 }
 
 void Synthesizer::renderNote(channels_vec &dest, std::string note,
