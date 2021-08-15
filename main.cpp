@@ -4,7 +4,7 @@
 #include "synthesizer.h"
 #include "utils.h"
 
-std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth);
+voices_vec bachPrelude(Synthesizer &synth);
 
 int main(int argc, char *argv[])
 {
@@ -26,12 +26,10 @@ int main(int argc, char *argv[])
   return 0;
 }
 
-std::vector<std::vector<std::vector<double>>> bachPrelude(Synthesizer &synth)
+voices_vec bachPrelude(Synthesizer &synth)
 {
   // Create a voice for each hand and get references to them
-  std::vector<std::vector<std::vector<double>>> voices(
-      2, std::vector<std::vector<double>>(
-             synth.getNumChannels(), std::vector<double>{}));
+  voices_vec voices(2, channels_vec(synth.getNumChannels(), samples_vec{}));
 
   auto &v1{voices[0]};
   auto &v2{voices[1]};

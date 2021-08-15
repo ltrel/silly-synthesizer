@@ -37,7 +37,7 @@ WaveFile::WaveFile(int sampleRate, int numChannels, int bitsPerSample)
   }
 }
 
-void WaveFile::pushSamples(std::vector<std::vector<double>> &newAudioData)
+void WaveFile::pushSamples(channels_vec &newAudioData)
 {
   // Ensure the new audio data has the right number of channels and  and equal
   // number of samples in each channel
@@ -50,7 +50,7 @@ void WaveFile::pushSamples(std::vector<std::vector<double>> &newAudioData)
   bool sizesEqual{std::all_of(
       newAudioData.begin(),
       newAudioData.end(),
-      [firstSize](const std::vector<double> &x)
+      [firstSize](const samples_vec &x)
       { return x.size() == firstSize; })};
   if (!sizesEqual)
   {

@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <vector>
 #include <filesystem>
+#include "utils.h"
 
 class WaveFile
 {
@@ -42,6 +43,6 @@ public:
   int getSampleRate() { return header.sampleRate; }
   int getNumChannels() { return header.numChannels; }
   int getBitsPerSample() { return header.bitsPerSample; }
-  void pushSamples(std::vector<std::vector<double>> &newAudioData);
+  void pushSamples(channels_vec &newAudioData);
   void saveToFile(std::filesystem::path path);
 };

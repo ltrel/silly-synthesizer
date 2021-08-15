@@ -14,8 +14,8 @@ Synthesizer::Synthesizer(int sampleRate, int numChannels, SynthOptions options)
   synthOptions = options;
 }
 
-void Synthesizer::renderNote(std::vector<std::vector<double>> &dest,
-                             std::string note, double seconds, double volume)
+void Synthesizer::renderNote(channels_vec &dest, std::string note,
+                             double seconds, double volume)
 {
   if (dest.size() != static_cast<std::size_t>(numChannels))
   {
@@ -44,7 +44,7 @@ void Synthesizer::renderNote(std::vector<std::vector<double>> &dest,
   }
 }
 
-std::vector<std::vector<double>> Synthesizer::combineVoices(std::vector<std::vector<std::vector<double>>> &voices)
+channels_vec Synthesizer::combineVoices(voices_vec &voices)
 {
   // Check how many samples long each voice is and find the maximum
   std::vector<std::size_t> voiceLengths{};
@@ -55,7 +55,7 @@ std::vector<std::vector<double>> Synthesizer::combineVoices(std::vector<std::vec
   std::size_t numSamples{*std::max_element(voiceLengths.begin(), voiceLengths.end())};
 
   // Create variable to hold output with same length as longest voice
-  std::vector<std::vector<double>> result(numChannels, std::vector<double>(numSamples, 0.0));
+  channels_vec result(numChannels, samples_vec(numSamples, 0.0));
 
   for (auto &voice : voices)
   {
@@ -63,8 +63,8 @@ std::vector<std::vector<double>> Synthesizer::combineVoices(std::vector<std::vec
     {
       // Sum the samples on this channel of the current voice with the samples
       // in the corresponding channel of the output
-      std::vector<double> &inChannel = voice[i];
-      std::vector<double> &outChannel = result[i];
+      samples_vec &inChannel = voice[i];
+      samples_vec &outChannel = result[i];
       std::transform(inChannel.begin(), inChannel.end(), outChannel.begin(),
                      outChannel.begin(), std::plus<double>());
     }
