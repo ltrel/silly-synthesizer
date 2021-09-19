@@ -42,6 +42,21 @@ void Synthesizer::renderNote(channels_vec &dest, std::string note,
   }
 }
 
+void Synthesizer::renderRest(channels_vec &dest, double seconds)
+{
+  if (dest.size() != static_cast<std::size_t>(numChannels))
+  {
+    throw "Destination contains wrong number of channels";
+  }
+
+  long numSamples{std::lround(sampleRate * seconds)};
+
+  for (auto &channel : dest)
+  {
+    channel.insert(channel.end(), numSamples, 0.0);
+  }
+}
+
 channels_vec Synthesizer::combineVoices(voices_vec &voices)
 {
   // Check how many samples long each voice is and find the maximum

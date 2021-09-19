@@ -25,6 +25,8 @@ public:
   Synthesizer(int sampleRate, int numChannels, SynthOptions options = SynthOptions{});
   void renderNote(channels_vec &dest, std::string note,
                   double seconds, double volume = 1.0);
+  void renderRest(channels_vec &dest, double seconds);
+
   channels_vec combineVoices(voices_vec &voices);
 
   int getSampleRate() { return sampleRate; }
