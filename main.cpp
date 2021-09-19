@@ -10,7 +10,7 @@ int main(int argc, char *argv[])
 {
   int sampleRate{44100};
   int numChannels{1};
-  int bitsPerSample{24};
+  int bitsPerSample{16};
 
   SynthOptions options;
   options.baseVolume = 1 / 6.0;
